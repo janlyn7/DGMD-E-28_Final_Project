@@ -131,7 +131,7 @@ function SpellingBee() {
 	function Header()
 	{
     	return (
-        	<div className="w3-center">
+        	<div id='head' className="w3-center">
 				<br/>
 				<Logo/> <h1 id='appTitle'><b>Spelling Bee</b></h1>
         	</div>
@@ -154,7 +154,7 @@ function SpellingBee() {
 		var style = "funckey w3-button w3-center w3-round-xlarge w3-padding-large"
 
 		return (
-			<div className="w3-center">
+			<div id='play' className="w3-center">
 				<br/>
 			<button id='playAgain' className={style}
 				onClick={(e) => handlePlayAgainClick(e)} >New Game</button>
