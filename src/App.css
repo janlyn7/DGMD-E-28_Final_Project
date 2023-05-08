@@ -1,0 +1,92 @@
+@import url('https://www.w3schools.com/w3css/4/w3.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
+#mainbody, #navbar {
+  width: 55%;
+  min-width: 480px;
+  max-width:600px;
+  margin: 0 auto;
+}
+
+#mainbody {
+  background-color: #efefef;
+  height: 600px;
+  border: 2px;
+}
+
+.playAgain {margin: 20px auto}
+.noShow {visibility:hidden; margin: 25px auto}
+
+a:-webkit-any-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+hr {
+  border: 1px solid lightgray;
+}
+.App {
+  text-align: center;
+}
+
+.square{
+  background-color: #bbbbbb;
+  width: 60px;
+  height: 60px;
+  border: none;
+  color: black;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+  vertical-align: baseline;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 5px 5px 5px 5px;
+}
+
+.square:hover{
+  background-color: lightgray;
+}
+.squareCent{
+  background-color: #dec207;
+  width: 60px;
+  height: 60px;
+  border: none;
+  color: black;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+  vertical-align: baseline;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 5px 5px 5px 5px;
+}
+.squareCent:hover {
+  background-color: #ebd52d;
+}
+
+#guessBanner {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#banner{
+  font-size: 18px;
+}
+
+.funckey {
+  background-color: lightgray;
+  font-size: 18px;
+  margin: 5px 5px 5px 5px;
+}
+#rulesList{
+  padding-top: 20px;
+  padding-left: 90px;
+}
+
+#wordsFound{
+  padding: 10px 30px 10px 30px;
+
+}
