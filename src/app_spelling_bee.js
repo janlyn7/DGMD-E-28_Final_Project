@@ -1,6 +1,7 @@
 import {Routes, Route, Link, useParams} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
+import { ReactComponent as Logo } from './spelling-bee-card-icon.svg';
 export function SpellingBeeApp() {
 	return (< SpellingBee />)
 }
@@ -132,7 +133,7 @@ function SpellingBee() {
     	return (
         	<div className="w3-center">
 				<br/>
-            	<h1><b>Spelling Bee</b></h1>
+				<Logo/> <h1 id='appTitle'><b>Spelling Bee</b></h1>
         	</div>
     	);
 	}
@@ -323,7 +324,7 @@ function SpellingBee() {
 
 		return (
 			<div id='mainbody' className="w3-display-container w3-round-xlarge w3-padding-large w3-card">
-			<br/><br/>
+			<br/>
 			< Banner />
 
 			<br/>

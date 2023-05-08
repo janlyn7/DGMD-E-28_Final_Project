@@ -1,6 +1,10 @@
-@import url('https://www.w3schools.com/w3css/4/w3.css');
+
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
+#appTitle {
+  font-family: Quando;
+
+}
 #mainbody, #navbar {
   width: 55%;
   min-width: 480px;
@@ -10,7 +14,7 @@
 
 #mainbody {
   background-color: #efefef;
-  height: 600px;
+  height: 575px;
   border: 2px;
 }
 
