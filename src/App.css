@@ -1,20 +1,19 @@
 
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
-
 #appTitle {
   font-family: Quando;
-
 }
+
 #head, #mainbody, #navbar, #play {
   width: 55%;
   min-width: 480px;
   max-width:600px;
   margin: 0 auto;
+  display: block
 }
 
 #mainbody {
   background-color: #efefef;
-  height: 575px;
+  height: 600px;
   border: 2px;
 }
 
@@ -83,11 +82,11 @@ hr {
   margin: 5px 5px 5px 5px;
 }
 #rulesList{
-  padding-top: 20px;
-  padding-left: 90px;
+  margin: 0 auto;
+  list-style-type: none;
 }
 
 #wordsFound{
   padding: 10px 30px 10px 30px;
-
+  margin: 0px 20px 0px 20px;
 }
