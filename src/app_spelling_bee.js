@@ -6,20 +6,51 @@ import { ReactComponent as Logo } from './spelling-bee-card-icon.svg';
 export function SpellingBeeApp() {
 	return (< SpellingBee />)
 }
+
+/*
+Parent component for the Spelling Bee App
+ */
 function SpellingBee() {
+	/********************************
+	 HOOKS Section
+	 ********************************/
+	// stores the five unique letters as an array
 	const [letters, setLetters] = useState( '');
+
+	// stores which of the five letters is highlighted in yellow (chosen at random)
 	const [centralLetter, setCentralLetter] = useState('');
+
+	// saves the Player's current guess
 	const [currentGuess, setCurrentGuess] = useState(	'');
+
+	// stores the message to display in the banner div
 	const [message, setMessage] = useState(	'How many words can you make with 5 letters?');
+
+	// stores the list of valid words the Player has found
     const [guesses, setGuesses] = useState([])
+
+	// save the list of pangrams the Player has found
     const [pangrams, setPangrams] = useState([])
 
+	// exclamations which are chosen at random and displayed in the
+	// announcement banner when the Player has entered a valid word
 	const exclamation = ['Good!', 'Nice!', 'Great!', 'Awesome!', 'Hooray!']
 
+	/*
+	Effect that initializes the game's State variables and generate 5 unique letters.
+	Runs only on the first render.
+	 */
 	useEffect (() => {
 		restart();
 	}, []);
 
+	/********************************
+	 COMPONENTS Section
+	 ********************************/
+	/*
+	Home component
+	Displays the Header, Navigation bar, Game View, and New Game Button
+	 */
 	function Home() {
     	return (
 			<div id='page' className="w3-display-container">
@@ -31,6 +62,10 @@ function SpellingBee() {
     	);
 	}
 
+	/*
+	Rules component
+	Displays the Header, Navigation Bar, Rules View
+	 */
 	function Rules() {
     	return (
 			<div id='page' className="w3-display-container">
@@ -40,6 +75,11 @@ function SpellingBee() {
 			</div>
     	);
 	}
+
+	/*
+	Header component
+	Displays the Bee logo and the title
+	 */
 	function Header()
 	{
     	return (
@@ -49,6 +89,11 @@ function SpellingBee() {
         	</div>
     	);
 	}
+
+	/*
+	Navigation component
+	Shows the links to the Game View and Rules View
+	 */
 	function Navigation()
 	{
 		var styling = "navItem w3-bar-item w3-button w3-padding w3-hover-none w3-border-white w3-hover-text-blue"
@@ -62,6 +107,11 @@ function SpellingBee() {
 			</div>
     	);
 	}
+
+	/*
+	Banner component used within the Game View
+	Displays exclamations if the Player has entered word or Errors for invalid entries
+	 */
 	function Banner() {
 		return (
 			<div className="w3-center" id="banner">
@@ -70,6 +120,10 @@ function SpellingBee() {
 		);
 	}
 
+	/*
+	ShowGuess component used within Game View
+	Displays which letter buttons the Player has clicked, i.e. the Player's current guess
+	 */
 	function ShowGuess() {
 		return (
 			<div className="w3-center" id="guessBanner">
@@ -78,6 +132,11 @@ function SpellingBee() {
 		);
 	}
 
+	/*
+	GameView component
+	Displays the game board - letter buttons, function buttons,
+	words found counter and list of valid words
+	 */
 	function GameView() {
 		function GameForm() {
 			return (
@@ -87,12 +146,9 @@ function SpellingBee() {
 						{createFunctionButtons()}
 						<hr/>
 						<div id='wordsDisplay'> <h5>
-							<br/>
-							You have found {guesses.length+pangrams.length} {(guesses.length+pangrams.length!=1) ? 'words' : 'word'}
+							You have found {guesses.length} {(guesses.length!=1) ? 'words' : 'word'}
 							<br/><br/>
-							{guesses.sort().join(", ")}
-							<br/>
-							<b>{pangrams.sort().join(", ")}</b>
+							{getWordsList()}
 						</h5> </div>
 					</div>
 			);
@@ -114,6 +170,10 @@ function SpellingBee() {
 		);
 	} // end GameView Component
 
+	/*
+	RulesView component
+	Displays Game Rules and how to play
+	 */
 	function RulesView() {
 		return (
 			<div id='mainbody' className="w3-container w3-round-xlarge w3-padding-large w3-card">
@@ -135,6 +195,10 @@ function SpellingBee() {
 		);
 	} // end RulesView component
 
+	/*
+	PlayAgain component
+	Button beneath the GameView which, when clicked, allows the Player to load another game
+	 */
 	function PlayAgain() {
 		var style = "funckey w3-button w3-center w3-round-xlarge w3-padding-large"
 
@@ -148,18 +212,36 @@ function SpellingBee() {
 		)
 	}
 
+	/*
+	Square component
+	Creates and returns a button for one of the five unique letters
+	The centralLetter is highlighted in yellow
+	 */
 	function Square(props)
 	{
 		var style = ((props.value == centralLetter) ? "squareCent" : "square") + " w3-round-large"
 		return ( <button className={style} onClick={props.onclick}>{props.value}</button>)
 	}
-	function createButton(name, key) {
+
+	/*
+	FunctionButton component
+	Creates and returns a button for one of three functions: Delete, Remix, Enter
+	 */
+	function FunctionButton({name, key}) {
 		var style=""
 		style = "funckey w3-button w3-round-xlarge w3-padding-large"
 
 		return (<button id={name.toLowerCase()} className={style} key={key}
 				onClick={(e) => handleFunctionClick(e)} >{name}</button>)
 	}
+
+	/********************************
+	 HELPER Functions Section
+	 ********************************/
+	/*
+	createSquares function
+	Generates the letter Squares to display
+	 */
 	function createSquares() {
 		var bunchOfSquares = [];
 		for (let ii = 0; ii<5; ii++)
@@ -167,15 +249,24 @@ function SpellingBee() {
 		return ( <div id="lettersDisplay">{bunchOfSquares}</div> );
 	}
 
+	/*
+	createFunctionButtons function
+	Generates the FunctionButtons to display: Delete, Remix, and Enter
+	 */
 	function createFunctionButtons() {
 		var funcs = ['Delete', 'Remix', 'Enter']
 		return (
 			<div className="functions">
-				{funcs.map((ff,ii) => createButton(ff, ii))}
+				{funcs.map((ff,ii) => <FunctionButton name={ff} key={ii} /> )}
 			</div>
 		)
 	}
 
+	/*
+	getRandonWord function
+	Retrieves and returns one randon five letter word using the
+	random-word-api.vercel.app API
+ 	*/
 	async function getRandomWord() {
 		var myword;
 		await fetch("https://random-word-api.vercel.app/api?words=1&length=5")
@@ -187,6 +278,10 @@ function SpellingBee() {
 		return myword;
 	}
 
+	/*
+	validateGuess function
+	Uses the Merriam-Webster Collegiate API to validate the Player's guess
+ 	*/
 	function validateGuess( guess ){
 		let req = new XMLHttpRequest();
 		req.open("GET", "https://www.dictionaryapi.com/api/v3/references/collegiate/json/" + guess +
@@ -201,6 +296,11 @@ function SpellingBee() {
 		}
 	}
 
+	/*
+	findUnique function
+	Determines of the input word contains unique letters
+	Returns true if there are 5 unique characters, false if not
+ 	*/
 	function findUnique(str){
       // The variable that contains the unique values
       let uniq = "";
@@ -216,13 +316,25 @@ function SpellingBee() {
       return (uniq.length == 5);
     }
 
+	/*
+	getRandomNum function
+	Retrieves a random number between 0 and input maximum value
+ 	*/
 	function getRandomNum(max) {
 		return Math.floor(Math.random() * max)
 	}
+
+	/*
+	getFiveLetters function
+	Retrieves a word with five unique letters, splits the characters into an array,
+	shuffles the letters, and stores the array in the letters useState hook
+ 	*/
 	async function getFiveLetters() {
 		var result = false;
 		var word;
 
+		// get a five letter word using the API
+		// if the word contains repeating letters or contains an 'S', get another word
 		do {
 			word = await getRandomWord();
 			result = findUnique(word)
@@ -231,19 +343,30 @@ function SpellingBee() {
 			}
 		} while (result == false)
 
+		// make word uppercase
 		word = word.toUpperCase()
-		
+
+		// print word to console for debugging purposes
 		console.log(word)
 
+		// select at random which letter to highlight
 		var randomNum = getRandomNum(5)
 		var letters =  word.split("")
 		var central = letters[randomNum]
 		setCentralLetter( central )
 
+		// remix the letters
 		shuffle(letters)
+
+		// store the shuffled letters in the letters useState hook
 		setLetters(letters)
 	}
 
+	/*
+	restart function
+	When 'New Game' button is clicked, clear useState variables and
+	generate another file letter word
+ 	*/
 	function restart() {
 		getFiveLetters()
 		setMessage('How many words can you make with 5 letters?')
@@ -252,14 +375,22 @@ function SpellingBee() {
 		setPangrams([])
 	}
 
+	/*
+	shuffle function
+	Reshuffles the input array
+ 	*/
 	function shuffle(array) {
 		let ii, jj
-  		for (let ii = array.length - 1; ii > 0; ii--) {
+  		for (ii = array.length - 1; ii > 0; ii--) {
 			jj = Math.floor(Math.random() * (ii + 1));
 			[array[ii], array[jj]] = [array[jj], array[ii]];
   		}
 	}
 
+	/*
+	isPangram function
+	Returns true if the Player's guess contains all five letters, false if not
+ 	*/
 	function isPangram(currentGuess) {
 		if ( currentGuess.includes(letters[0]) &&  currentGuess.includes(letters[1]) &&
 			currentGuess.includes(letters[2]) && currentGuess.includes(letters[3]) &&
@@ -269,12 +400,37 @@ function SpellingBee() {
 		return false
 	}
 
+	/*
+	getWordsList function
+	Return the list of words found by the Player, highlight the pangrams (if any)
+	with bold typeface
+ 	*/
+	function getWordsList() {
+		guesses.sort()
+		const listItems = guesses.map( word =>
+			pangrams.includes(word) ? <b>&nbsp;{word}&nbsp;</b> : word+"  "
+		);
+		return <> {listItems} </>
+	}
+
+	/********************************
+	 EVENT HANDLER Section
+	 ********************************/
+	/*
+	handleSquareClick event
+	Update the Player's currentGuess with the letter clicked
+ 	*/
 	function handleSquareClick(e) {
 		setMessage('')
 		var guess = currentGuess + letters[e]
 		setCurrentGuess(guess)
-
 	}
+
+	/*
+	handleFunctionClick event
+	Generic eventHandler for FunctionButton clicks; uses a switch statement to call the
+	appropriate event handler for Delete, Remix, or Enter
+ 	*/
 	function handleFunctionClick(e) {
 		setMessage('')
 		switch (e.target.id) {
@@ -288,63 +444,104 @@ function SpellingBee() {
 				break
 		}
 	}
+
+	/*
+	handleRemixClick event
+	Reshuffles and redisplays the letter Squares
+ 	*/
 	function handleRemixClick() {
 		shuffle(letters)
 		setLetters(letters)
 		createSquares()
 	}
+
+	/*
+	handleDeleteClick event
+	Removes one letter from the Player's current guess
+ 	*/
 	function handleDeleteClick() {
 		if (currentGuess.length == 0) {
 			return
 		}
 		setCurrentGuess(currentGuess.slice(0,-1))
 	}
+
+	/*
+	handleEnterClick event
+	Submits the Player's input word and validates; displays an exclamation in the
+	announcement banner if the word is valid, or displays an appropriate error message
+	for the invalid guess
+ 	*/
 	function handleEnterClick() {
+		// if the current guess is an empty string, do nothing and return
 		if (currentGuess.length == 0) {
 			setCurrentGuess('')
 			return
 		}
 
+		// if the current guess does not contain the central letter,
+		// print error message "Must contain highlighted letter" and return
 		if (!currentGuess.includes(centralLetter)){
 			setMessage("Must contain highlighted letter")
 			setCurrentGuess('')
 			return
 		}
 
-		if ( guesses.includes(currentGuess) || pangrams.includes(currentGuess) ) {
+		// if the current guess is already in the list,
+		// print error message "Already Found" and return
+		if ( guesses.includes(currentGuess)) {
 			setMessage("Already Found")
 			setCurrentGuess('')
 			return
 		}
 
+		// if the current guess is shorter than three characters,
+		// print error message "Word must be at least 3 letters long" and return
 		if (currentGuess.length < 3) {
 			setMessage("Word must be at least 3 letters long")
 			setCurrentGuess('')
 			return
 		}
 
+		// use API to check if the current guess is a valid English word
 		var isValid = validateGuess(currentGuess)
 
 		if (isValid) {
-			setCurrentGuess('')
+			// add valid guess to the guesses list
+			setGuesses((gg) => [...gg, currentGuess])
 
+			// if the word is a pangram, print 'Pangram!!' and add it to
+			// the pangrams State
 			if (isPangram(currentGuess)) {
 				setMessage('Pangram!!')
 				setPangrams((gg) => [...gg, currentGuess])
 			} else {
-				setGuesses((gg) => [...gg, currentGuess])
+				// if not a pangram, print a random affirmation from the
+				//exclamations list
 				var num = getRandomNum(5)
 				setMessage(exclamation[num])
 			}
+
+			// clear the current guess
+			setCurrentGuess('')
 		} else {
+			// if word is not valid, print error message "Not in word list"
+			// and clear the current guess
 			setMessage("Not in word list")
 			setCurrentGuess('')
 		}
 	}
+
+	/*
+	handlePlayAgainClick event
+	Clears game, i.e. resets the State variables, and retrieves / displays
+	a new set of 5 unique letters
+ 	*/
 	function handlePlayAgainClick() {
 		restart()
 	}
 
+	// Return the Spelling Bee Route elements
     return (
 		<div>
 		  <Routes>

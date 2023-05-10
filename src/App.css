@@ -86,7 +86,6 @@ hr {
   list-style-type: none;
 }
 
-#wordsFound{
+#wordsDisplay{
   padding: 10px 30px 10px 30px;
-  margin: 0px 20px 0px 20px;
 }
